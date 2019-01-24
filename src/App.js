@@ -13,7 +13,7 @@ class App extends Component {
         <Layout>
           <Switch>
             <Route path="/auth" component={Auth} />
-            <Route path="/logout" component={Logout} />
+            <Route path="/sign-out" component={Logout} />
           </Switch>
         </Layout>
       </div>
