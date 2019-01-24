@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import classes from './Modal.module.css';
 import Backdrop from '../../../components/UI/Backdrop/Backdrop';
 
-export default class Modal extends Component {
+class Modal extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
@@ -25,3 +25,5 @@ export default class Modal extends Component {
 );
   }
 }
+
+export default Modal;
