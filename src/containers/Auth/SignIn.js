@@ -7,39 +7,40 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './Auth.module.css';
 import * as actions from '../../store/actions/index';
 
-class Auth extends Component {
-  state = {
-    controls: {
-      email: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'email',
-          placeholder: 'chosen.one@hogwarts.uk'
+class SignIn extends Component {
+    state = {
+      controls: {
+        email: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'email',
+            placeholder: 'chosen.one@hogwarts.uk',
+            name: 'email'
+          },
+          value: '',
+          validation: {
+            required: true
+          },
+          valid: false,
+          touched: false
         },
-        value: '',
-        validation: {
-          required: true
-        },
-        valid: false,
-        touched: false
-      },
-      password: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'password',
-          placeholder: 'Password'
-        },
-        value: '',
-        validation: {
-          required: true,
-          minLength: 6
-        },
-        valid: false,
-        touched: false
+        password: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'password',
+            placeholder: 'Password',
+            name: 'password'
+          },
+          value: '',
+          validation: {
+            required: true,
+            minLength: 5
+          },
+          valid: false,
+          touched: false
+        }
       }
-    },
-    isSignUp: true
-  }
+    }
 
   checkValidity(value, rules) {
     let isValid = true;
@@ -52,7 +53,6 @@ class Auth extends Component {
     if (rules.maxLength) {
       isValid = value.length <= rules.maxLength && isValid;
     }
-
     return isValid;
   }
 
@@ -61,7 +61,10 @@ class Auth extends Component {
       ...this.state.controls,
       [controlName]: {
         ...this.state.controls[controlName],
-        value: event.target.value,
+        elementConfig: {
+          ...this.state.controls[controlName].elementConfig,
+          value: event.target.value
+        },
         valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation),
         touched: true
       }
@@ -72,13 +75,11 @@ class Auth extends Component {
   submitHandler = (event) => {
     event.preventDefault();
     console.log(this.state.controls.email.value);
-    this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value);
-  }
-
-  switchAuthModeHandler = () => {
-    this.setState(prevState => {
-      return { isSignUp: !prevState.isSignUp }
-    });
+    const data = {
+      'email': this.state.controls.email.elementConfig.value,
+      'password': this.state.controls.password.elementConfig.value
+    };
+    this.props.onSignIn(data);
   }
 
   render() {
@@ -123,23 +124,22 @@ class Auth extends Component {
           {form}
           <Button btnType="Success">SUBMIT</Button>
         </form>
-        <Button clicked={this.switchAuthModeHandler} btnType="Danger">START {this.state.isSignUp ? 'SIGN IN' : 'SIGN UP'}</Button>
       </div>
     )
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
     error: state.auth.error
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp))
+    onSignIn: (data) => dispatch(actions.signIn(data))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

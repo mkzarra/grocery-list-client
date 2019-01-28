@@ -12,7 +12,7 @@ export const authStart = () => {
 export const authSuccess = (token, userId) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    idToken: token,
+    token: token,
     userId: userId
   };
 }
@@ -38,27 +38,36 @@ export const checkAuthTimeout = (expirationTime) => {
   }
 }
 
-export const auth = (email, password, isSignUp) => {
+export const signUp = (data) => {
   return dispatch => {
     dispatch(authStart());
-    const authData = {
-      email: email,
-      password: password,
-      returnSecureToken: true
-    }
-    let url = apiUrl + '/sign-up'
-    if (!isSignUp) {
-      url = apiUrl + '/sign-in'
-    }
-    axios.post(url, authData)
+    axios.post(apiUrl + '/sign-up', { credentials: data })
       .then(res => {
-        console.log(res.data);
-        dispatch(authSuccess(res.data.idToken, res.data.localId));
+        console.log(res);
+        console.log(data);
+        dispatch(authSuccess(res.data.token, res.data.userId));
         dispatch(checkAuthTimeout(res.data.expiresIn));
       })
       .catch(err => {
-        console.log(err.response);
-        dispatch(authFail(err.response.data.error));
+        console.log(err);
+        console.log(data);
+        dispatch(authFail(err));
       });
+  }
+}
+
+export const signIn = (data) => {
+  return dispatch => {
+    dispatch(authStart());
+    axios.post(apiUrl + '/sign-in', { credentials: data })
+      .then(res => {
+        console.log(res.data);
+        console.log(data);
+        dispatch(authSuccess(res.data.token, res.data.userId))
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(authFail(err));
+    })
   }
 }
