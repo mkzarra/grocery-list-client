@@ -15,9 +15,9 @@ class SignIn extends Component {
           elementConfig: {
             type: 'email',
             placeholder: 'chosen.one@hogwarts.uk',
-            name: 'email'
+            name: 'email',
+            value: ''
           },
-          value: '',
           validation: {
             required: true
           },
@@ -29,9 +29,9 @@ class SignIn extends Component {
           elementConfig: {
             type: 'password',
             placeholder: 'Password',
-            name: 'password'
+            name: 'password',
+            value: ''
           },
-          value: '',
           validation: {
             required: true,
             minLength: 5
@@ -74,7 +74,6 @@ class SignIn extends Component {
 
   submitHandler = (event) => {
     event.preventDefault();
-    console.log(this.state.controls.email.value);
     const data = {
       'email': this.state.controls.email.elementConfig.value,
       'password': this.state.controls.password.elementConfig.value
@@ -97,7 +96,7 @@ class SignIn extends Component {
         key={formElement.id}
         elementType={formElement.config.elementType}
         elementConfig={formElement.config.elementConfig}
-        value={formElement.config.value}
+        value={formElement.config.elementConfig.value}
         invalid={!formElement.config.valid}
         shouldValidate={formElement.config.validation}
         touched={formElement.config.touched}
@@ -132,7 +131,8 @@ class SignIn extends Component {
 const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
-    error: state.auth.error
+    error: state.auth.error,
+    token: state.auth.token
   }
 }
 

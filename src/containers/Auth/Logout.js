@@ -1,22 +1,39 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import * as actions from '../../store/actions/index';
+import classes from './Auth.module.css';
+import Button from '../../components/UI/Button/Button';
+// import Input from '../../components/UI/Input/Input';
 
 class Logout extends Component {
-  componentDidMount() {
-    this.props.onLogout();
+  logoutSubmitHandler = (event) => {
+    event.preventDefault();
+    this.props.onLogout(this.props.token);
   }
+
   render() {
-    return <Redirect to="/"/>;
+    return (
+      <div className={classes.Logout}>
+        <form onSubmit={this.logoutSubmitHandler}>
+          <input type="hidden" className="inputLogout" value={this.props.token || ''}/>
+          <Button btnType="Danger">Sign Out</Button>
+        </form>
+      </div>
+    );
+  };
+}
+
+const mapStateToProps = state => {
+  return {
+    token: state.auth.token
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLogout: () => dispatch(actions.logout())
+    onLogout: (token) => dispatch(actions.logout(token))
   };
 }
 
-export default connect(null, mapDispatchToProps)(Logout);
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);

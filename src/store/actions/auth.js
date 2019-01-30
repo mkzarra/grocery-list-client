@@ -24,17 +24,19 @@ export const authFail = (error) => {
   };
 }
 
-export const logout = () => {
-  return {
-    type: actionTypes.AUTH_LOGOUT
-  }
-}
-
-export const checkAuthTimeout = (expirationTime) => {
+export const logout = (token) => {
+  console.log(token);
   return dispatch => {
-    setTimeout(() => {
-      dispatch(logout());
-    }, expirationTime * 1000);
+    dispatch(authStart());
+    axios.delete(apiUrl + '/sign-out', { headers: {Authorization: 'Token token=' + token} })
+      .then(res => {
+        console.log(res);
+        dispatch(authSuccess(null, null));
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(authFail(err));
+      });
   }
 }
 
@@ -45,8 +47,7 @@ export const signUp = (data) => {
       .then(res => {
         console.log(res);
         console.log(data);
-        dispatch(authSuccess(res.data.token, res.data.userId));
-        dispatch(checkAuthTimeout(res.data.expiresIn));
+        dispatch(authSuccess(res.data.user.token, res.data.user.id));
       })
       .catch(err => {
         console.log(err);
@@ -61,13 +62,13 @@ export const signIn = (data) => {
     dispatch(authStart());
     axios.post(apiUrl + '/sign-in', { credentials: data })
       .then(res => {
-        console.log(res.data);
+        console.log(res.data.user);
         console.log(data);
-        dispatch(authSuccess(res.data.token, res.data.userId))
+        dispatch(authSuccess(res.data.user.token, res.data.user.id))
       })
       .catch(err => {
         console.log(err);
         dispatch(authFail(err));
-    })
+      });
   }
 }
