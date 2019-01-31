@@ -1,2 +1,2 @@
 export { signIn, signUp, logout } from './auth';
-export { fetchItems } from './item';
+export { fetchItems, createItem, deleteItem, showItem, updateItem } from './item';

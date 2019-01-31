@@ -15,6 +15,10 @@ class Items extends Component {
     this.props.onFetchItems();
   }
 
+  shouldComponentUpdate() {
+    this.props.onFetchItems();
+  }
+
   render() {
     let items = <Spinner />;
     if (!this.props.loading) {
@@ -28,6 +32,7 @@ class Items extends Component {
         );
       });
     }
+
     return (
       <div>
         {items}
@@ -45,7 +50,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispacth => {
   return {
-    onFetchItems: () => dispacth(actions.fetchItems())
+    onFetchItems: () => dispacth(actions.fetchItems()),
+    onAddItem: (data) => dispacth(actions.createItem(data)),
+    onDeleteItem: (data) => dispacth(actions.deleteItem(data)),
+    onShowItem: (id, user) => dispacth(actions.showItem(id, user))
   } 
 }
 

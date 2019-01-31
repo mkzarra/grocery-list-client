@@ -23,7 +23,80 @@ export const fetchItemsFail = error => {
   }
 }
 
+export const removeItemSuccess = items => {
+  return {
+    type: actionTypes.REMOVE_ITEM_SUCCESS,
+    items: items
+  }
+}
+
+export const removeItemFail = error => {
+  return {
+    type: actionTypes.REMOVE_ITEM_FAIL,
+    error: error
+  }
+}
+
+export const addItemSuccess = items => {
+  return {
+    type: actionTypes.ADD_ITEM_SUCCESS,
+    items: items
+  }
+}
+
+export const addItemFail = error => {
+  return {
+    type: actionTypes.ADD_ITEM_FAIL,
+    error: error
+  }
+}
+
+export const showItem = (id, user) => {
+  return dispatch => {
+    dispatch(fetchItemsStart());
+    axios.get(apiUrl + '/items/' + id, user)
+      .then(res => {
+        const item = { ...res.data[key], id: key };
+        dispatch(fetchItemsSuccess(item));
+        })
+      .catch(err => {
+        dispatch(fetchItemsFail(err));
+      });
+  }
+}
+
+export const createItem = data => {
+  return dispatch => {
+    dispatch(fetchItemsStart());
+    axios.post(apiUrl + '/items/', { headers: { Authorization: "Token token=" + data.user.token } })
+      .then(res => {
+        console.log(res.data);
+        dispatch(addItemSuccess(res.data.item));
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(addItemFail(err));
+      });
+  }
+}
+
+export const deleteItem = data => {
+  return dispatch => {
+    dispatch(fetchItemsStart());
+    axios.delete(apiUrl + '/items/' + data.items.item.id, { headers: { Authorization: "Token token=" + data.user.token } })
+      .then(res => {
+        console.log(res.data);
+        dispatch(removeItemSuccess(res.data.item.id));
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(removeItemFail(err));
+      });
+  }
+}
+
 export const fetchItems = () => {
+  dispatch(fetchItemsStart());
   return dispatch => {
     axios.get(apiUrl + '/items')
       .then(res => {
