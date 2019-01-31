@@ -35,6 +35,14 @@ const removeItemFail = (state, action) => {
   return updateObject(state, { loading: false });
 }
 
+const updateItemSuccess = (state, action) => {
+  return updateObject(state, { items: action.items, loading: false });
+}
+
+const updateItemFail = (state, action) => {
+  return updateObject(state, { loading: false });
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.FETCH_ITEMS_START: return fetchItemsStart(state, action);
@@ -44,6 +52,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.ADD_ITEM_FAIL: return addItemFail(state, action);
     case actionTypes.REMOVE_ITEM_SUCCESS: return removeItemSuccess(state, action);
     case actionTypes.REMOVE_ITEM_FAIL: return removeItemFail(state, action);
+    case actionTypes.UPDATE_ITEM_SUCCESS: return updateItemSuccess(state, action);
+    case actionTypes.UPDATE_ITEM_FAIL: return updateItemFail(state, action);
     default: return state;
   }
 }

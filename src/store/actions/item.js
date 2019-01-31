@@ -51,6 +51,20 @@ export const addItemFail = error => {
   }
 }
 
+export const updateItemSuccess = items => {
+  return {
+    type: actionTypes.UPDATE_ITEM_SUCCESS,
+    items: items
+  }
+}
+
+export const updateItemFail = error => {
+  return {
+    type: actionTypes.UPDATE_ITEM_FAIL,
+    error: error
+  }
+}
+
 export const showItem = (id, user) => {
   return dispatch => {
     dispatch(fetchItemsStart());
@@ -95,9 +109,24 @@ export const deleteItem = data => {
   }
 }
 
-export const fetchItems = () => {
-  dispatch(fetchItemsStart());
+export const updateItem = (data) => {
   return dispatch => {
+    dispatch(fetchItemsStart());
+    axios.patch(apiUrl + '/items/' + data.items.item.id, { headers: { Authorization: "Token token=" + data.user.token } })
+      .then(res => {
+        console.log(res.data);
+        dispatch(updateItemSuccess(res.data.items.item));
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(updateItemFail(err));
+      });
+  }
+}
+
+export const fetchItems = () => {
+  return dispatch => {
+    dispatch(fetchItemsStart());
     axios.get(apiUrl + '/items')
       .then(res => {
         const fetchedItems = [];
