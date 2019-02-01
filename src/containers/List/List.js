@@ -62,10 +62,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetListItem = (data) => dispatch(actions.getListItem(data)),
-    onRemoveListItem = (data) => dispatch(actions.removeListItem(data)),
-    onActivateList = (data) => dispatch(actions.activateList(data)),
-    onDeactivateList = (data) => dispatch(actions.deactivateList(data))
+    onGetListItem: (data) => dispatch(actions.getListItem(data)),
+    onRemoveListItem: (data) => dispatch(actions.removeListItem(data)),
+    onActivateList: (data) => dispatch(actions.activateList(data)),
+    onDeactivateList: (data) => dispatch(actions.deactivateList(data))
   }
 }
 

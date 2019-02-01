@@ -71,7 +71,7 @@ const mapDispatchToProps = dispacth => {
     onFetchItems: () => dispacth(actions.fetchItems()),
     onShowItem: (id, user) => dispacth(actions.showItem(id, user)),
     onUpdateItem: (data) => dispacth(actions.updateItem(data)),
-    onAddItemToList = (data) => dispatch(actions.addItemToList(data))
+    onAddItemToList: (data) => dispatch(actions.addItemToList(data))
   } 
 }
 
