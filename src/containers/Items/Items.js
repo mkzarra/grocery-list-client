@@ -25,6 +25,7 @@ class Items extends Component {
       items = this.props.items.map(item => {
         return (
           <Item key={item.id}
+            id={props.id}
             itemName={item.name}
             price={item.price}
             organic={item.organic}
@@ -53,7 +54,8 @@ const mapDispatchToProps = dispacth => {
     onFetchItems: () => dispacth(actions.fetchItems()),
     onAddItem: (data) => dispacth(actions.createItem(data)),
     onDeleteItem: (data) => dispacth(actions.deleteItem(data)),
-    onShowItem: (id, user) => dispacth(actions.showItem(id, user))
+    onShowItem: (id, user) => dispacth(actions.showItem(id, user)),
+    onUpdateItem: (data) => dispacth(actions.updateItem(data))
   } 
 }
 

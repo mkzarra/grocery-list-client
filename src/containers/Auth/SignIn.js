@@ -88,7 +88,7 @@ class SignIn extends Component {
       formElementsArray.push({
         id: key,
         config: this.state.controls[key]
-      })
+      });
     }
 
     let form = formElementsArray.map(formElement => (
@@ -113,7 +113,7 @@ class SignIn extends Component {
     if (this.props.error) {
       errorMessage = (
         <p>{this.props.error.message}</p>
-      )
+      );
     }
 
     return (

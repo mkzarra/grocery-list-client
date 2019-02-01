@@ -1,10 +1,10 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
-import { removeItemFail } from '../actions/item';
 
 const initialState = {
   items: [],
-  loading: false
+  loading: false,
+  error: null
 }
 
 const fetchItemsStart = (state, action) => {

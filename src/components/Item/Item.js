@@ -35,15 +35,21 @@ const item = props => {
 
   return (
     <div className={classes.Item}>
-      <p><strong>{props.name}</strong></p>
-      {price}
-      {organic}
-      {PLU}
-      {GMO}
-      {department}
-      {additionalInfo}
+      <form onSubmit={props.submit}>
+        <input type="hidden" value={props.id} />
+        <p><strong>{props.name}</strong></p>
+        {price}
+        {organic}
+        {PLU}
+        {GMO}
+        {department}
+        {additionalInfo}
+        {!props.onList
+          ? <Button btnType="Success">Add to List</Button>
+          : <Button btnType="Danger">Remove</Button>}
+      </form>
     </div>
-  )
+  );
 }
 
 export default item;
