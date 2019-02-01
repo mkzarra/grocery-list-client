@@ -11,13 +11,15 @@ import * as serviceWorker from './serviceWorker';
 import authReducer from './store/reducers/auth';
 import itemReducer from './store/reducers/item';
 import listReducer from './store/reducers/list';
+import myListsReducer from './store/reducers/listHistory';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   auth: authReducer,
   item: itemReducer,
-  list: listReducer
+  list: listReducer,
+  myLists: myListsReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));

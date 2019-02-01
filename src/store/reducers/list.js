@@ -29,7 +29,7 @@ const deactivateListFail = (state, action) => {
 }
 
 const addToListSuccess = (state, action) => {
-  return updateObject(state, { lists: action.lists, loading: false });
+  return updateObject(state, { items: action.items, loading: false });
 }
 
 const addToListFail = (state, action) => {
@@ -37,10 +37,18 @@ const addToListFail = (state, action) => {
 }
 
 const removeFromListSuccess = (state, action) => {
-  return updateObject(state, { lists: action.lists, loading: false });
+  return updateObject(state, { items: action.items, loading: false });
 }
 
 const removeFromListFail = (state, action) => {
+  return updateObject(state, { error: action.error, loading: false });
+}
+
+const getItemFromListSuccess = (state, action) => {
+  return updateObject(state, { items: action.items, loading: false });
+}
+
+const getItemFromListFail = (state, action) => {
   return updateObject(state, { error: action.error, loading: false });
 }
 
@@ -55,6 +63,8 @@ const reducer = (state = insitialState, action) => {
     case actionTypes.ADD_TO_LIST_FAIL: return addToListFail(state, action);
     case actionTypes.REMOVE_FROM_LIST_SUCCESS: return removeFromListSuccess(state, action);
     case actionTypes.REMOVE_FROM_LIST_FAIL: return removeFromListFail(state, action);
+    case actionTypes.GET_ITEM_FROM_LIST_SUCCESS: return getItemFromListSuccess(state, action);
+    case actionTypes.GET_ITEM_FROM_LIST_FAIL: return getItemFromListFail(state, action);
     default: return state;
   }
 }

@@ -19,17 +19,32 @@ class Items extends Component {
     this.props.onFetchItems();
   }
 
+  addToListHandler = (event) => {
+    event.preventDefault();
+    data = {
+      'add_to_list': event.target.value,
+      token: this.props.token
+    }
+    this.props.onAddItemToList(data)
+  }
+
   render() {
     let items = <Spinner />;
     if (!this.props.loading) {
       items = this.props.items.map(item => {
         return (
-          <Item key={item.id}
-            id={props.id}
-            itemName={item.name}
-            price={item.price}
-            organic={item.organic}
-          />
+          <div>
+            <Item key={item.id}
+              id={props.id}
+              itemName={item.name}
+              price={item.price}
+              organic={item.organic}
+            />
+            <form onSubmit={this.addToListHandler}>
+              <input type="hidden" name="add_to_list" value={item.id} />
+              <Button btnType="Success">Add to List</Button>
+            </form>
+          </div>
         );
       });
     }
@@ -45,17 +60,18 @@ class Items extends Component {
 const mapStateToProps = state => {
   return {
     items: state.item.items,
-    loading: state.item.loading
+    loading: state.item.loading,
+    listItems: state.list.items,
+    token: state.auth.token
   }
 }
 
 const mapDispatchToProps = dispacth => {
   return {
     onFetchItems: () => dispacth(actions.fetchItems()),
-    onAddItem: (data) => dispacth(actions.createItem(data)),
-    onDeleteItem: (data) => dispacth(actions.deleteItem(data)),
     onShowItem: (id, user) => dispacth(actions.showItem(id, user)),
-    onUpdateItem: (data) => dispacth(actions.updateItem(data))
+    onUpdateItem: (data) => dispacth(actions.updateItem(data)),
+    onAddItemToList = (data) => dispatch(actions.addItemToList(data))
   } 
 }
 

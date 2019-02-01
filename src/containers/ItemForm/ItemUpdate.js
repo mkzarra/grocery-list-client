@@ -160,7 +160,7 @@ class ItemUpdate extends Component {
     for (let controlName in this.state.controls) {
       data[controlName] = this.state.controls[controlName].elementConfig.value
     }
-    this.props.onUpdateItem(data);
+    this.props.onUpdateItem({...data, token: this.props.token});
   }
 
   render() {
@@ -213,13 +213,14 @@ class ItemUpdate extends Component {
 const mapStateToProps = state => {
   return {
     loading: state.item.loading,
-    error: state.item.error
+    error: state.item.error,
+    token: state.auth.token
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAddItem: (data) => dispatch(actions.addItem(data))
+    onUpdateItem: (data) => dispatch(actions.updateItem(data))
   }
 }
 

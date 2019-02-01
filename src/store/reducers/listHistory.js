@@ -44,6 +44,14 @@ const activateListFail = (state, action) => {
   return updateObject(state, { error: action.error, loading: false });
 }
 
+const getListSuccess = (state, action) => {
+  return updateObject(state, { lists: action.lists, loading: false });
+}
+
+const getListFail = (state, action) => {
+  return updateObject(state, { error: action.error, loading: false });
+}
+
 const reducer = (state = insitialState, action) => {
   switch (action.type) {
     case actionTypes.LIST_START: return listStart(state, action);
@@ -55,6 +63,8 @@ const reducer = (state = insitialState, action) => {
     case actionTypes.DEACTIVATE_LIST_FAIL: return deactivateListFail(state, action);
     case actionTypes.ACTIVATE_LIST_SUCCESS: return activateListSuccess(state, action);
     case actionTypes.ACTIVATE_LIST_FAIL: return activateListFail(state, action);
+    case actionTypes.GET_LIST_SUCCESS: return getListSuccess(state, action);
+    case actionTypes.GET_LIST_FAIL: return getListFail(state, action);
     default: return state;
   }
 }

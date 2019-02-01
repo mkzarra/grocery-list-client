@@ -96,3 +96,33 @@ export const createList = (data) => {
   }
 }
 
+export const getList = (data) => {
+  return dispatch => {
+    dispatch(listStart());
+    axios.get(apiUrl + '/lists/' + data.lists.list.id, { headers: { Authorization: "Token token=" + data.user.token } })
+      .then(res => {
+        console.log(res.data);
+        dispatch(getListSuccess(res.data.lists.list));
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch(getListFail(error));
+      });
+  }
+}
+
+export const deleteList = (data) => {
+  return dispatch => {
+    dispatch(listStart());
+    axios.delete(apiUrl + '/lists/' + data.lists.list.id, { headers: { Authorization: "Token token=" + data.user.token } })
+      .then(res => {
+        console.log(res.data);
+        dispatch(deleteListSuccess(res.data.list.id));
+        dispatch(deactivateListSuccess({}));
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch(deleteListFail(error));
+      });
+  }
+}

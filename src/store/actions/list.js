@@ -65,3 +65,54 @@ export const removeFromListsFail = error => {
   }
 }
 
+export const getItemFromListSuccess = item => {
+  return {
+    type: actionTypes.GET_ITEM_FROM_LIST_SUCCESS,
+    item: item
+  }
+}
+
+export const getItemFromListFail = error => {
+  return {
+    type: actionTypes.GET_ITEM_FROM_LIST_FAIL,
+    error: error
+  }
+}
+
+export const addToList = data => {
+  return dispatch => {
+    dispatch(listStart());
+    axios.patch(apiUrl + '/lists/' + data.lists.list.id, {
+      headers: {
+        Authorization: "Token token=" + data.user.id
+      }
+    })
+      .then(res => {
+        console.log(res.data);
+        dispatch(addToListSuccess(res.data.list.item));
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch(addToListFail(error));
+      });
+  }
+}
+
+export const removeFromList = data => {
+  return dispatch => {
+    dispatch(listStart());
+    axios.patch(apiUrl + '/lists/' + data.lists.list.id, {
+      headers: {
+        Authorization: "Token token=" + data.user.id
+      }
+    })
+      .then(res => {
+        console.log(res.data);
+        dispatch(removeFromListSuccess(res.data.list.item))
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch(removeFromListsFail(error));
+      });
+  }
+}

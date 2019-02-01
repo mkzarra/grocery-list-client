@@ -160,7 +160,7 @@ class ItemForm extends Component {
     for (let controlName in this.state.controls) {
       data[controlName] = this.state.controls[controlName].elementConfig.value
     }
-    this.props.onAddItem(data);
+    this.props.onAddItem({...data, token: this.props.token});
   }
 
   render() {
@@ -213,7 +213,8 @@ class ItemForm extends Component {
 const mapStateToProps = state => {
   return {
     loading: state.item.loading,
-    error: state.item.error
+    error: state.item.error,
+    token: state.auth.token
   }
 }
 
