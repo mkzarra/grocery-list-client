@@ -16,7 +16,7 @@ const fetchItemsSuccess = (state, action) => {
 }
 
 const fetchItemsFail = (state, action) => {
-  return updateObject(state, { loading: false });
+  return updateObject(state, { error: action.error, loading: false });
 }
 
 const addItemSuccess = (state, action) => {
@@ -24,7 +24,7 @@ const addItemSuccess = (state, action) => {
 }
 
 const addItemFail = (state, action) => {
-  return updateObject(state, { loading: false });
+  return updateObject(state, { error: action.error, loading: false });
 }
 
 const removeItemSuccess = (state, action) => {
@@ -32,7 +32,7 @@ const removeItemSuccess = (state, action) => {
 }
 
 const removeItemFail = (state, action) => {
-  return updateObject(state, { loading: false });
+  return updateObject(state, { error: action.error, loading: false });
 }
 
 const updateItemSuccess = (state, action) => {
@@ -40,7 +40,7 @@ const updateItemSuccess = (state, action) => {
 }
 
 const updateItemFail = (state, action) => {
-  return updateObject(state, { loading: false });
+  return updateObject(state, { error: action.error, loading: false });
 }
 
 const reducer = (state = initialState, action) => {

@@ -9,38 +9,38 @@ export const listStart = () => {
   }
 }
 
-export const createListSuccess = lists => {
+export const activateListSuccess = active => {
   return {
-    type: actionTypes.CREATE_LIST_SUCCESS,
-    lists: lists
+    type: actionTypes.ACTIVATE_LIST_SUCCESS,
+    active: active
   }
 }
 
-export const createListFail = error => {
+export const activateListFail = error => {
   return {
-    type: actionTypes.CREATE_LIST_FAIL,
+    type: actionTypes.ACTIVATE_LIST_FAIL,
     error: error
   }
 }
 
-export const deleteListSuccess = lists => {
+export const deactivateListSuccess = active => {
   return {
-    type: actionTypes.DELETE_LIST_SUCCESS,
-    lists: lists
+    type: actionTypes.DEACTIVATE_LIST_SUCCESS,
+    active: active
   }
 }
 
-export const deleteListFail = error => {
+export const deactivateListFail = error => {
   return {
-    type: actionTypes.DELETE_LIST_FAIL,
+    type: actionTypes.DEACTIVATE_LIST_FAIL,
     error: error
   }
 }
 
-export const addToListSuccess = lists => {
+export const addToListSuccess = items => {
   return {
     type: actionTypes.ADD_TO_LIST_SUCCESS,
-    lists: lists
+    items: items
   }
 }
 
@@ -51,10 +51,10 @@ export const addToListFail = error => {
   }
 }
 
-export const removeFromListSuccess = lists => {
+export const removeFromListSuccess = items => {
   return {
     type: actionTypes.REMOVE_FROM_LIST_SUCCESS,
-    lists: lists
+    items: items
   }
 }
 
@@ -64,3 +64,4 @@ export const removeFromListsFail = error => {
     error: error
   }
 }
+
