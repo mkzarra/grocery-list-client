@@ -82,7 +82,12 @@ export const getListFail = error => {
 export const createList = (data) => {
   return dispatch => {
     dispatch(listStart());
-    axios.post(apiUrl + '/lists', { headers: { Authorization: "Token token=" + data.user.token } })
+    axios.post(apiUrl + '/lists', {
+      list: data.list,
+      headers: {
+        Authorization: "Token token=" + data.token
+      }
+    })
       .then(res => {
         console.log(res.data);
         dispatch(createListSuccess(res.data.lists.list));
@@ -99,7 +104,11 @@ export const createList = (data) => {
 export const getList = (data) => {
   return dispatch => {
     dispatch(listStart());
-    axios.get(apiUrl + '/lists/' + data.lists.list.id, { headers: { Authorization: "Token token=" + data.user.token } })
+    axios.get(apiUrl + '/lists/' + data.lists.list.id, {
+      headers: {
+        Authorization: "Token token=" + data.user.token
+      }
+    })
       .then(res => {
         console.log(res.data);
         dispatch(getListSuccess(res.data.lists.list));
@@ -114,7 +123,11 @@ export const getList = (data) => {
 export const deleteList = (data) => {
   return dispatch => {
     dispatch(listStart());
-    axios.delete(apiUrl + '/lists/' + data.lists.list.id, { headers: { Authorization: "Token token=" + data.user.token } })
+    axios.delete(apiUrl + '/lists/' + data.lists.list.id, {
+      headers: {
+        Authorization: "Token token=" + data.token
+      }
+    })
       .then(res => {
         console.log(res.data);
         dispatch(deleteListSuccess(res.data.list.id));

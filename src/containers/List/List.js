@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import Spinner from '../../components/UI/Spinner/Spinner';
+import Item from '../../components/Item/Item';
+import Button from '../../components/UI/Button/Button';
 import * as actions from '../../store/actions/index';
 import classes from './List.module.css';
 
@@ -15,10 +18,10 @@ class List extends Component {
   removeItemHandler = (event) => {
     event.preventDefault();
     const data = {
-      'remove_from_list': event.target.value,
+      itemId: event.target.value,
       token: this.props.token
     }
-    this.props.onRemoveListItem(data)
+    this.props.onRemoveListItem(data);
   }
 
   render() {
@@ -28,7 +31,7 @@ class List extends Component {
         return (
           <div>
             <Item key={item.id}
-              id={props.id}
+              id={item.id}
               itemName={item.name}
               price={item.price}
               organic={item.organic}

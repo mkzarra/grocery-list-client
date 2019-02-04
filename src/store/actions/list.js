@@ -82,9 +82,9 @@ export const getItemFromListFail = error => {
 export const addToList = data => {
   return dispatch => {
     dispatch(listStart());
-    axios.patch(apiUrl + '/lists/' + data.lists.list.id, {
+    axios.patch(apiUrl + '/lists/' + data.itemId, {
       headers: {
-        Authorization: "Token token=" + data.user.id
+        Authorization: "Token token=" + data.token
       }
     })
       .then(res => {
@@ -98,12 +98,12 @@ export const addToList = data => {
   }
 }
 
-export const removeFromList = data => {
+export const removeListItem = data => {
   return dispatch => {
     dispatch(listStart());
-    axios.patch(apiUrl + '/lists/' + data.lists.list.id, {
+    axios.patch(apiUrl + '/lists/' + data.itemId, {
       headers: {
-        Authorization: "Token token=" + data.user.id
+        Authorization: "Token token=" + data.token
       }
     })
       .then(res => {
@@ -114,5 +114,26 @@ export const removeFromList = data => {
         console.log(error);
         dispatch(removeFromListsFail(error));
       });
+  }
+}
+
+export const activateList = list => {
+  return dispatch => {
+    dispatch(listStart());
+
+  }
+}
+
+export const deactivateList = list => {
+  return dispatch => {
+    dispatch(listStart());
+
+  }
+}
+
+export const getListItem = item => {
+  return dispatch => {
+    dispatch(listStart());
+
   }
 }

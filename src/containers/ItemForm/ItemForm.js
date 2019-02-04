@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import classes from './ItemForm.module.css';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Input from '../../components/UI/Input/Input';
-import actions from '../../store/actions/index';
+import Button from '../../components/UI/Button/Button';
+import * as actions from '../../store/actions/index';
 
 class ItemForm extends Component {
   state = {
     controls: {
       name: {
+        label: "name",
         elementType: 'input',
         elementConfig: {
           type: 'text',
@@ -23,7 +25,23 @@ class ItemForm extends Component {
         valid: false,
         touched: false
       },
+      price: {
+        label: "price",
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: '2.50',
+          name: 'price',
+          value: ''
+        },
+        validation: {
+          required: true
+        },
+        valid: false,
+        touched: false
+      },
       department: {
+        label: 'department',
         elementType: 'input',
         elementConfig: {
           type: 'text',
@@ -38,6 +56,7 @@ class ItemForm extends Component {
         touched: false
       },
       organic: {
+        label: "organic",
         elementType: 'input',
         elementConfig: {
           type: 'checkbox',
@@ -52,6 +71,7 @@ class ItemForm extends Component {
         touched: false
       },
       PLU: {
+        label: 'PLU',
         elementType: 'input',
         elementConfig: {
           type: 'text',
@@ -66,6 +86,7 @@ class ItemForm extends Component {
         touched: false
       },
       taxable: {
+        label: 'taxable',
         elementType: 'input',
         elementConfig: {
           type: 'checkbox',
@@ -80,6 +101,7 @@ class ItemForm extends Component {
         touched: false
       },
       onSale: {
+        label: 'on sale',
         elementType: 'input',
         elementConfig: {
           type: 'checkbox',
@@ -94,6 +116,7 @@ class ItemForm extends Component {
         touched: false
       },
       GMO: {
+        label: 'non GMO',
         elementType: 'input',
         elementConfig: {
           type: 'checkbox',
@@ -108,6 +131,7 @@ class ItemForm extends Component {
         touched: false
       },
       additionalInfo: {
+        label: 'additional info',
         elementType: 'input',
         elementConfig: {
           type: 'text',
@@ -156,11 +180,15 @@ class ItemForm extends Component {
 
   createItemSubmitHandler = (event) => {
     event.preventDefault();
-    const data = {}
-    for (let controlName in this.state.controls) {
-      data[controlName] = this.state.controls[controlName].elementConfig.value
+    const data = {
+      token: this.props.token,
+      item: {}
     }
-    this.props.onAddItem({...data, token: this.props.token});
+    for (let controlName in this.state.controls) {
+      data.item[controlName] = this.state.controls[controlName].elementConfig.value
+    }
+    console.log(data)
+    this.props.onCreateItem(data);
   }
 
   render() {
@@ -173,21 +201,22 @@ class ItemForm extends Component {
       });
     }
     
-    let form = formElementsArray.map(formElement => (
-      <Input
-        key={formElement.id}
-        elementType={formElement.config.elementType}
-        elementConfig={formElement.config.elementConfig}
-        value={formElement.config.elementConfig.value}
-        invalid={!formElement.config.valid}
-        shouldValidate={formElement.config.validation}
-        touched={formElement.config.touched}
-        changed={(event) => inputChangedHandler(event, formElement.id)}
-      />
-    ));
+    let form = <Spinner /> 
 
-    if (this.props.loading) {
-      form = <Spinner />
+    if (!this.props.loading) {
+      form = formElementsArray.map(formElement => (
+        <Input
+          key={formElement.id}
+          label={formElement.config.label}
+          elementType={formElement.config.elementType}
+          elementConfig={formElement.config.elementConfig}
+          value={formElement.config.elementConfig.value}
+          invalid={!formElement.config.valid}
+          shouldValidate={formElement.config.validation}
+          touched={formElement.config.touched}
+          changed={(event) => this.inputChangedHandler(event, formElement.id)}
+        />
+      ));
     }
 
     let errorMessage = null;
@@ -198,12 +227,17 @@ class ItemForm extends Component {
       );
     }
 
+    let visibility = classes.ItemForm;
+    if (!this.props.visible) {
+      visibility = classes.Hidden;
+    }
+
     return (
-      <div className={classes.ItemForm}>
+      <div className={visibility}>
         {errorMessage}
         <form onSubmit={this.createItemSubmitHandler}>
           {form}
-          <Button btnTyp="Success">Save</Button>
+          <Button btnType="Success">Save</Button>
         </form>
       </div>
     );
@@ -214,13 +248,14 @@ const mapStateToProps = state => {
   return {
     loading: state.item.loading,
     error: state.item.error,
-    token: state.auth.token
+    token: state.auth.token,
+    visible: state.item.showForm
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAddItem: (data) => dispatch(actions.addItem(data))
+    onCreateItem: (data) => dispatch(actions.createItem(data))
   }
 }
 

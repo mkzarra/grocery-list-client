@@ -6,6 +6,8 @@ import SignUp from './containers/Auth/SignUp';
 import SignIn from './containers/Auth/SignIn'
 import Logout from './containers/Auth/Logout';
 import Items from './containers/Items/Items';
+import MyLists from './containers/ListHistory/ListHistory';
+import Main from './containers/Main/Main';
 
 class App extends Component {
   render() {
@@ -17,7 +19,9 @@ class App extends Component {
             <Route path="/sign-up" component={SignUp} />
             <Route path="/sign-in" component={SignIn} />
             <Route path="/sign-out" component={Logout} />
-            <Route path="/" component={Items} />
+            <Route path="/items" component={Items} />
+            <Route path="/lists" component={MyLists} />
+            <Route path="/" component={Main} />
           </Switch>
         </Layout>
       </div>

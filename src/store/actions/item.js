@@ -65,13 +65,16 @@ export const updateItemFail = error => {
   }
 }
 
-export const showItem = (id, user) => {
+export const showItem = (data) => {
   return dispatch => {
     dispatch(fetchItemsStart());
-    axios.get(apiUrl + '/items/' + id, user)
+    axios.get(apiUrl + '/items/' + data.itemId, {
+      headers: {
+        Authorization: "Token token=" + data.token
+      }
+    })
       .then(res => {
-        const item = { ...res.data[key], id: key };
-        dispatch(fetchItemsSuccess(item));
+        dispatch(fetchItemsSuccess(res.data.item));
         })
       .catch(err => {
         dispatch(fetchItemsFail(err));
@@ -82,7 +85,12 @@ export const showItem = (id, user) => {
 export const createItem = data => {
   return dispatch => {
     dispatch(fetchItemsStart());
-    axios.post(apiUrl + '/items/', { headers: { Authorization: "Token token=" + data.user.token } })
+    axios.post(apiUrl + '/items/', {
+      item: data.item,
+      headers: {
+        Authorization: "Token token=" + data.token
+      }
+    })
       .then(res => {
         console.log(res.data);
         dispatch(addItemSuccess(res.data.item));
@@ -94,10 +102,39 @@ export const createItem = data => {
   }
 }
 
+export const toggleFormDisplaySuccess = showForm => {
+  console.log(showForm);
+  return {
+    type: actionTypes.TOGGLE_FORM_DISPLAY_SUCCESS,
+    showForm: showForm,
+  }
+}
+
+export const toggleFormDisplayFail = error => {
+  return {
+    type: actionTypes.TOGGLE_FORM_DISPLAY_FAIL,
+    error: error
+  }
+}
+
+export const toggleFormDisplay = (token, visibility) => {
+  return dispatch => {
+    dispatch(fetchItemsStart());
+    if (!token) {
+      dispatch(err => toggleFormDisplayFail(err));
+    }
+    dispatch(toggleFormDisplaySuccess(visibility));
+  }
+}
+
 export const deleteItem = data => {
   return dispatch => {
     dispatch(fetchItemsStart());
-    axios.delete(apiUrl + '/items/' + data.items.item.id, { headers: { Authorization: "Token token=" + data.user.token } })
+    axios.delete(apiUrl + '/items/' + data.itemId, {
+      headers: {
+        Authorization: "Token token=" + data.token
+      }
+    })
       .then(res => {
         console.log(res.data);
         dispatch(removeItemSuccess(res.data.item.id));
@@ -112,7 +149,13 @@ export const deleteItem = data => {
 export const updateItem = (data) => {
   return dispatch => {
     dispatch(fetchItemsStart());
-    axios.patch(apiUrl + '/items/' + data.items.item.id, { headers: { Authorization: "Token token=" + data.user.token } })
+    console.log(data)
+    axios.patch(apiUrl + '/items/' + data.itemId, {
+      headers: {
+        Authorization: "Token token=" + data.token,
+
+      }
+    })
       .then(res => {
         console.log(res.data);
         dispatch(updateItemSuccess(res.data.items.item));
@@ -130,9 +173,11 @@ export const fetchItems = () => {
     axios.get(apiUrl + '/items')
       .then(res => {
         const fetchedItems = [];
-        for (let key in res.data) {
-          fetchItems.push({ ...res.data[key], id: key });
+        console.log(res.data.items);
+        for (let key in res.data.items) {
+          fetchedItems.push({ ...res.data.items[key] });
         }
+        console.log(fetchedItems);
         dispatch(fetchItemsSuccess(fetchedItems));
       })
       .catch(err => {

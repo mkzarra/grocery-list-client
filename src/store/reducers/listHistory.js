@@ -37,7 +37,7 @@ const deactivateListFail = (state, action) => {
 }
 
 const activateListSuccess = (state, action) => {
-  return updateObject(state, { loading: false, activeList: activeList });
+  return updateObject(state, { loading: false, activeList: action.activeList });
 }
 
 const activateListFail = (state, action) => {

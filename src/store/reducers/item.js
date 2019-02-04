@@ -4,7 +4,8 @@ import { updateObject } from '../utility';
 const initialState = {
   items: [],
   loading: false,
-  error: null
+  error: null,
+  showForm: false
 }
 
 const fetchItemsStart = (state, action) => {
@@ -43,6 +44,15 @@ const updateItemFail = (state, action) => {
   return updateObject(state, { error: action.error, loading: false });
 }
 
+const toggleFormDisplaySuccess = (state, action) => {
+  console.log(action.showForm)
+  return updateObject(state, { showForm: action.showForm, loading: false });
+}
+
+const toggleFormDisplayFail = (state, action) => {
+  return updateObject(state, { error: action.error, loading: false });
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.FETCH_ITEMS_START: return fetchItemsStart(state, action);
@@ -54,6 +64,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.REMOVE_ITEM_FAIL: return removeItemFail(state, action);
     case actionTypes.UPDATE_ITEM_SUCCESS: return updateItemSuccess(state, action);
     case actionTypes.UPDATE_ITEM_FAIL: return updateItemFail(state, action);
+    case actionTypes.TOGGLE_FORM_DISPLAY_SUCCESS: return toggleFormDisplaySuccess(state, action);
+    case actionTypes.TOGGLE_FORM_DISPLAY_FAIL: return toggleFormDisplayFail(state, action);
     default: return state;
   }
 }
