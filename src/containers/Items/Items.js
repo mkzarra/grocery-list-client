@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { Link } from 'react-router';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import * as actions from '../../store/actions/index';
@@ -11,30 +10,11 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Items extends Component {
   state = {
-    items: [],
-    loading: true,
-    showForm: false
+    lists: []
   }
-
+  
   componentDidMount() {
     this.props.onFetchItems();
-  }
-
-  addToListHandler = (event) => {
-    event.preventDefault();
-    const data = {
-      itemId: event.target.value,
-      token: this.props.token
-    }
-    console.log(event.target);
-    console.log(data);
-    this.props.onAddItemToList(data)
-    if (!this.props.lists) {
-      this.props.onCreateList({
-        list: [{ ...data.itemId, ...this.props.userId }],
-        ...this.props.token
-      });
-    }
   }
 
   toggleDisplayHandler = () => {
@@ -47,25 +27,45 @@ class Items extends Component {
     if (!this.props.loading && this.props.items === null) {
       items = null;
     }
+    console.log(this.props.lists.length)
+    // let listId = this.props.lists.length === 0 ? null : this.props.lists[0].id
     if (this.props.items.length > 0 && !this.props.loading) {
       items = this.props.items.map(item => {
         return (
-            <Item key={item.id}
-              id={item.id}
-              itemName={item.name}
-              price={+item.price}
-              organic={item.organic}
-              submit={this.addToListHandler}
-            />
+          <Item key={item.id}
+            id={item.id}
+            itemName={item.name}
+            price={+item.price}
+            organic={item.organic}
+            submit={this.addToListHandler}
+            token={this.props.token}
+            userId={this.props.userId}
+            // listId={listId}
+            addToList={this.props.onAddItemToList}
+          />
         );
       });
     }
 
+    if (!this.props.token || !this.props.lists) {
+      items = <Redirect to="/" />;
+    }
+
+    let plusSign = this.props.token
+      ? <PlusSign
+        showForm={!this.props.visible}
+        toggleDisplay={this.toggleDisplayHandler} />
+      : null;
+
+    let itemForm = this.props.token
+      ? <ItemForm visible={this.toggleDisplayHandler} />
+      : null;
+      
     return (
       <div>
         {items}
-        <PlusSign showForm={!this.props.visible} toggleDisplay={this.toggleDisplayHandler} />
-        <ItemForm visible={this.toggleDisplayHandler} />
+        {plusSign}
+        {itemForm}
       </div>
     );
   }
@@ -73,19 +73,20 @@ class Items extends Component {
 
 const mapStateToProps = state => {
   return {
+    lists: state.myLists.lists,
     items: state.item.items,
     loading: state.item.loading,
     listItems: state.list.items,
     userId: state.auth.userId,
     token: state.auth.token,
     visible: state.item.showForm,
-    lists: state.myLists.lists
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onFetchItems: (data) => dispatch(actions.fetchItems(data)),
+    onGetAllLists: (data) => dispatch(actions.getAllLists(data)),
     onShowItem: (data) => dispatch(actions.showItem(data)),
     onUpdateItem: (data) => dispatch(actions.updateItem(data)),
     onAddItemToList: (data) => dispatch(actions.addToList(data)),

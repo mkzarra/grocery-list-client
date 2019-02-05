@@ -8,6 +8,7 @@ import Logout from './containers/Auth/Logout';
 import Items from './containers/Items/Items';
 import MyLists from './containers/ListHistory/ListHistory';
 import Main from './containers/Main/Main';
+// import withErrorHandler from './hoc/withErrorHandler/withErrorHandler';
 
 class App extends Component {
   render() {
@@ -29,4 +30,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default (App);

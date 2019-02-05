@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Input from '../../components/UI/Input/Input';
@@ -116,7 +117,7 @@ class SignIn extends Component {
       );
     }
 
-    return (
+    let signIn = (
       <div className={classes.Auth}>
         {errorMessage}
         <form onSubmit={this.submitHandler}>
@@ -124,7 +125,16 @@ class SignIn extends Component {
           <Button btnType="Success">SUBMIT</Button>
         </form>
       </div>
-    )
+    );
+    if (this.props.token) {
+      signIn = <Redirect to="/" />
+    }
+
+    return (
+      <div>
+        {signIn}
+      </div>
+    );
   }
 }
 

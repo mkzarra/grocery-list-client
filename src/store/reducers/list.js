@@ -1,7 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
 
-const insitialState = {
+const initialState = {
+  listId: null,
   items: [],
   loading: false,
   error: false,
@@ -52,7 +53,7 @@ const getItemFromListFail = (state, action) => {
   return updateObject(state, { error: action.error, loading: false });
 }
 
-const reducer = (state = insitialState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.LIST_START: return listStart(state, action);
     case actionTypes.ACTIVATE_LIST_SUCCESS: return activateListSuccess(state, action);

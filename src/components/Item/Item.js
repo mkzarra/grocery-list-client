@@ -39,6 +39,19 @@ const item = props => {
     additionalInfo = null;
   }
 
+  const addToListHandler = (event) => {
+    event.preventDefault();
+    console.log(event);
+    const data = {
+      itemId: props.id,
+      activeId: props.activeId,
+      token: props.token,
+      userId: props.userId
+    }
+    console.log(data);
+    props.addToList(data)
+  }
+
   return (
     <div className={classes.Item}>
       <p><strong>{props.itemName}</strong></p>
@@ -48,11 +61,11 @@ const item = props => {
       {GMO}
       {department}
       {additionalInfo}
-      <form onSubmit={props.submit}>
-        <input type="hidden" value={props.id} />
+      <form onSubmit={(event) => addToListHandler(event)} >
+        <input type="hidden" name="item_id" value={`${props.id}`} />
         {!props.onList
-          ? <Button btnType="Success">Add to List</Button>
-          : <Button btnType="Danger">Remove</Button>}
+          ? <Button value={props.id} btnType="Success">Add to List</Button>
+          : <Button value={props.id} btnType="Danger">Remove</Button>}
       </form>
     </div>
   );

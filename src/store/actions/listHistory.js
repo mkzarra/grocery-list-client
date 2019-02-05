@@ -37,10 +37,10 @@ export const deleteListFail = error => {
   }
 }
 
-export const activateListSuccess = activeList => {
+export const activateListSuccess = lists => {
   return {
     type: actionTypes.ACTIVATE_LIST_SUCCESS,
-    activeList: activeList
+    lists: lists
   }
 }
 
@@ -51,10 +51,10 @@ export const activateListFail = error => {
   }
 }
 
-export const deactivateListSuccess = activeList => {
+export const deactivateListSuccess = lists => {
   return {
     type: actionTypes.DEACTIVATE_LIST_SUCCESS,
-    activeList: activeList
+    lists: lists
   }
 }
 
@@ -79,24 +79,50 @@ export const getListFail = error => {
   }
 }
 
+export const activateList = (lists, newList) => {
+  return lists.unshift(newList);
+}
+
 export const createList = (data) => {
+  console.log(data);
   return dispatch => {
     dispatch(listStart());
     axios.post(apiUrl + '/lists', {
-      list: data.list,
+      list: {
+        user_id: data.userId,
+        items: data.list
+      },
       headers: {
         Authorization: "Token token=" + data.token
       }
     })
       .then(res => {
         console.log(res.data);
-        dispatch(createListSuccess(res.data.lists.list));
-        dispatch(activateListSuccess(res.data.lists.list));
+        dispatch(createListSuccess(res.data));
+        dispatch(activateList(data.myLists, res.data));
       })
       .catch(error => {
         console.log(error);
         dispatch(createListFail(error));
-        dispatch(activateListFail(error));
+        // dispatch(activateListFail(error));
+      });
+  }
+}
+
+export const getAllLists = (data) => {
+  return dispatch => {
+    dispatch(listStart());
+    axios.get(apiUrl + '/lists', {
+      headers: {
+        Authorization: "Token token=" + data.token
+      }
+    })
+      .then(res => {
+        dispatch(getListSuccess(res.data.lists));
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch(getListFail(error));
       });
   }
 }
@@ -104,7 +130,7 @@ export const createList = (data) => {
 export const getList = (data) => {
   return dispatch => {
     dispatch(listStart());
-    axios.get(apiUrl + '/lists/' + data.lists.list.id, {
+    axios.get(apiUrl + '/lists/' + data.listId, {
       headers: {
         Authorization: "Token token=" + data.user.token
       }
@@ -123,7 +149,8 @@ export const getList = (data) => {
 export const deleteList = (data) => {
   return dispatch => {
     dispatch(listStart());
-    axios.delete(apiUrl + '/lists/' + data.lists.list.id, {
+
+    axios.delete(apiUrl + '/lists/' + data.listId, {
       headers: {
         Authorization: "Token token=" + data.token
       }

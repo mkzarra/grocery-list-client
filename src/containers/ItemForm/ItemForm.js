@@ -187,7 +187,7 @@ class ItemForm extends Component {
     for (let controlName in this.state.controls) {
       data.item[controlName] = this.state.controls[controlName].elementConfig.value
     }
-    console.log(data)
+    console.log(data);
     this.props.onCreateItem(data);
   }
 

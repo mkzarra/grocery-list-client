@@ -80,9 +80,22 @@ export const getItemFromListFail = error => {
 }
 
 export const addToList = data => {
+  console.log(data)
   return dispatch => {
     dispatch(listStart());
-    axios.patch(apiUrl + '/lists/' + data.itemId, {
+    // axios.get(apiUrl + '/items/' + data.itemId, {
+    //   headers: {
+    //     Authorization: "Token token=" + data.token,
+    //   }
+    // })
+    //   .then(res => {
+    //     console.log(res.data);
+    // })
+    axios.patch(apiUrl + '/lists/' + data.activeId, {
+      list: {
+        items: [data.itemId],
+        user_id: data.userId
+      },
       headers: {
         Authorization: "Token token=" + data.token
       }
@@ -101,7 +114,7 @@ export const addToList = data => {
 export const removeListItem = data => {
   return dispatch => {
     dispatch(listStart());
-    axios.patch(apiUrl + '/lists/' + data.itemId, {
+    axios.patch(apiUrl + '/lists/' + data.listId, {
       headers: {
         Authorization: "Token token=" + data.token
       }

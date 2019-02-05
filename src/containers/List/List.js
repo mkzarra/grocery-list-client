@@ -8,13 +8,16 @@ import * as actions from '../../store/actions/index';
 import classes from './List.module.css';
 
 class List extends Component {
-  state = {
-    items: [],
-    error: false,
-    loading: false,
-    active: false
+removeListHandler = (event) => {
+  event.preventDefault();
+  const data = {
+    listId: this.props.listId,
+    token: this.props.token
   }
-
+  console.log(this.props.listId);
+  this.props.onDeleteList(data);
+}
+  
   removeItemHandler = (event) => {
     event.preventDefault();
     const data = {
@@ -25,29 +28,37 @@ class List extends Component {
   }
 
   render() {
+    console.log(this.props.activeId)
     let items = <Spinner />;
     if (!this.props.loading) {
-      items = this.props.items.map(item => {
+      items = this.props.items.map(item => {        
         return (
-          <div>
-            <Item key={item.id}
+          <div key={item.id}>
+            <Item
               id={item.id}
               itemName={item.name}
               price={item.price}
               organic={item.organic}
+              remove={this.removeItemHandler}
+              activeId={this.props.activeId}
+              onList={true}
             />
-            <form onSubmit={this.removeItemHandler}>
-              <input type="hidden" value={item.id} />
-              <Button btnType="Danger" />
-            </form>
           </div>
         );
       });
     }
 
+    if (!this.props.items) {
+      items = null;
+    }
+
     return (
       <div className={classes.List}>
         {items}
+        <form onSubmit={this.removeListHandler}>
+          <input type="hidden" name="delete_list" />
+          <Button btnType="Danger" />
+        </form>
       </div>
     );
   }
@@ -66,6 +77,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onGetListItem: (data) => dispatch(actions.getListItem(data)),
+    onDeleteList: (data) => dispatch(actions.deleteList(data)),
     onRemoveListItem: (data) => dispatch(actions.removeListItem(data)),
     onActivateList: (data) => dispatch(actions.activateList(data)),
     onDeactivateList: (data) => dispatch(actions.deactivateList(data))

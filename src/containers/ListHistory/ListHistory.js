@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import List from '../List/List';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import Button from '../../components/UI/Button/Button';
 import * as actions from '../../store/actions/index';
 import classes from './ListHistory.module.css';
 
@@ -11,42 +11,41 @@ class ListHistory extends Component {
   state = {
     lists: [],
     error: false,
-    loading: false,
-    activeList: {}
+    loading: false
   }
 
-  removeListHandler = (event) => {
-    event.preventDefault();
+  componentDidMount() {
+    console.log(this.props.lists);
     const data = {
-      listId: event.target.value,
       token: this.props.token
     }
-    this.props.onRemoveListList(data);
+    this.props.onGetAllLists(data);
   }
 
-    render() {
+  render() {
     let lists = <Spinner />;
+    const activeList = [...this.props.lists]
+    const activeListObj = { ...activeList.shift() };
+    let activeListId = activeListObj.id
+    console.log(activeListId)
     if (!this.props.loading) {
       lists = this.props.lists.map(list => {
+        if (activeListId !== list.id) {
+          activeListId = null;
+        }
         return (
-          <div>
-            <List key={list.id}
-              id={list.id}
-              listName={list.name}
-              price={list.price}
-              organic={list.organic}
-            />
-            <form onSubmit={this.removeListHandler}>
-              <input type="hidden" value={list.id} />
-              <Button btnType="Danger" />
-            </form>
+          <div key={list.id}>
+            <List activeId={activeListId} listId={list.id} loading={false} />
           </div>
         );
       });
     }
 
+    if (!this.props.token || this.props.lists.length === 0) {
+      lists = <Redirect to="/" />
+    }
     return (
-      <div className={classes.List}>
+      <div className={classes.ListHistory}>
         {lists}
       </div>
     );
@@ -66,6 +65,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onGetList: (data) => dispatch(actions.getList(data)),
+    onGetAllLists: (data) => dispatch(actions.getAllLists(data)),
     onCreateList: (data) => dispatch(actions.createList(data)),
     onDeleteList: (data) => dispatch(actions.deleteList(data))
   }

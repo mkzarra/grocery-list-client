@@ -1,11 +1,10 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
 
-const insitialState = {
+const initialState = {
   lists: [],
   loading: false,
-  error: false,
-  activeList: {}
+  error: false
 }
 
 const listStart = (state, action) => {
@@ -13,7 +12,7 @@ const listStart = (state, action) => {
 }
 
 const createListSuccess = (state, action) => {
-  return updateObject(state, { lists: action.lists, loading: false, activeList: action.activeList });
+  return updateObject(state, { lists: action.lists, loading: false });
 }
 
 const createListFail = (state, action) => {
@@ -37,7 +36,7 @@ const deactivateListFail = (state, action) => {
 }
 
 const activateListSuccess = (state, action) => {
-  return updateObject(state, { loading: false, activeList: action.activeList });
+  return updateObject(state, { loading: false, lists: action.lists });
 }
 
 const activateListFail = (state, action) => {
@@ -52,7 +51,7 @@ const getListFail = (state, action) => {
   return updateObject(state, { error: action.error, loading: false });
 }
 
-const reducer = (state = insitialState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.LIST_START: return listStart(state, action);
     case actionTypes.CREATE_LIST_SUCCESS: return createListSuccess(state, action);

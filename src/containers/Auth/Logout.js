@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import * as actions from '../../store/actions/index';
@@ -13,12 +14,21 @@ class Logout extends Component {
   }
 
   render() {
-    return (
+    let signOut = (
       <div className={classes.Logout}>
         <form onSubmit={this.logoutSubmitHandler}>
-          <input type="hidden" className="inputLogout" value={this.props.token || ''}/>
-          <Button btnType="Danger">Sign Out</Button>
+          <input type="hidden" className="inputLogout" value={this.props.token || ''} />
+          <Button btnType="Danger">Click here to sign out</Button>
         </form>
+      </div>
+    );
+
+    if (!this.props.token) {
+      signOut = <Redirect to="/" />
+    }
+    return (
+      <div>
+        {signOut}
       </div>
     );
   };

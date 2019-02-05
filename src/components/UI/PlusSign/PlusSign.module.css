@@ -1,7 +1,7 @@
 .PlusSign {
   font-size: 40px;
   text-align: center;
-  color: #158a1b;
+  color: rgb(31, 146, 16);
   padding: 10px;
   width: 40px;
   height: 20px;
@@ -11,7 +11,7 @@
 }
 
 .PlusSign:hover {
-  color: #46c04c;
+  color: rgb(34, 184, 20);
 }
 
 .MinusSign {
