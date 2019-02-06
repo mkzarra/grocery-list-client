@@ -83,10 +83,8 @@ export const addToList = data => {
   console.log(data)
   return dispatch => {
     dispatch(listStart());
-    axios.post(apiUrl + '/lists/' + data.activeId, {
-      list: {
-        user_id: data.userId
-      },
+    axios.post(apiUrl + '/my_lists/', {
+      
       headers: {
         Authorization: "Token token=" + data.token
       }
