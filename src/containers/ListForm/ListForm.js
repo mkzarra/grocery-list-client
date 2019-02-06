@@ -10,6 +10,10 @@ class ListForm extends Component {
     value: ''
   }
 
+  disableButtonHandler = () => {
+    return 'disabled'
+  }
+
   createListHandler = (event) => {
     event.preventDefault();
     const data = {
@@ -26,7 +30,7 @@ class ListForm extends Component {
       <div className={classes.ListForm}>
         <form onSubmit={this.createListHandler}>
           <input type="hidden" name="create_list" />
-          <Button btnType="Success">Start New List</Button>
+          <Button onClick={this.disableButtonHandler} btnType="Success">Start New List</Button>
         </form>
       </div>
     );

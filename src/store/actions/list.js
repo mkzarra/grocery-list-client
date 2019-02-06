@@ -83,17 +83,8 @@ export const addToList = data => {
   console.log(data)
   return dispatch => {
     dispatch(listStart());
-    // axios.get(apiUrl + '/items/' + data.itemId, {
-    //   headers: {
-    //     Authorization: "Token token=" + data.token,
-    //   }
-    // })
-    //   .then(res => {
-    //     console.log(res.data);
-    // })
-    axios.patch(apiUrl + '/lists/' + data.activeId, {
+    axios.post(apiUrl + '/lists/' + data.activeId, {
       list: {
-        items: [data.itemId],
         user_id: data.userId
       },
       headers: {

@@ -9,9 +9,6 @@ import ItemForm from '../ItemForm/ItemForm';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Items extends Component {
-  state = {
-    lists: []
-  }
   
   componentDidMount() {
     this.props.onFetchItems();
@@ -36,7 +33,6 @@ class Items extends Component {
             id={item.id}
             itemName={item.name}
             price={+item.price}
-            organic={item.organic}
             submit={this.addToListHandler}
             token={this.props.token}
             userId={this.props.userId}

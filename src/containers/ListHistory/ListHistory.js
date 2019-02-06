@@ -24,6 +24,8 @@ class ListHistory extends Component {
 
   render() {
     let lists = <Spinner />;
+    console.log(this.props.lists);
+    console.log(...this.props.lists);
     const activeList = [...this.props.lists]
     const activeListObj = { ...activeList.shift() };
     let activeListId = activeListObj.id

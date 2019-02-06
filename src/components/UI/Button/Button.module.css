@@ -1,6 +1,6 @@
 .Button {
   text-align: center;
-  background-color: transparent;
+  background: #444;
   border: 1px solid #7f7f7f;
   color: white;
   outline: none;
